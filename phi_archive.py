@@ -28,7 +28,7 @@ for root, dirs, files in os.walk(INCOMING):
 
         ext = src.suffix.lower().lstrip(".")  # "jpg", "pdf", "", (no extension)
 
-        bucket = f"{ext}_files" if ext else "no_extension_files"
+        bucket = f"_{ext}_files" if ext else "no_extension_files"
         dst_dir = DEST_BASE / bucket
         dst = dst_dir / src.name
 
