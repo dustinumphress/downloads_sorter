@@ -2,7 +2,8 @@ import os
 import shutil
 from pathlib import Path
 
-DRY_RUN = True
+# DRY_RUN = False will move the files this is not reversible!
+DRY_RUN = False
 
 INCOMING = Path("/mnt/e/Downloads")
 DEST_BASE = Path("/mnt/e/Downloads")
@@ -19,12 +20,13 @@ for root, dirs, files in os.walk(INCOMING):
 
     for filename in files:
         src = root / filename
+        # print([a for a in dir(src) if "suffix" in a])
 
         # skip non-files just in case
         if not src.is_file():
             continue
 
-        ext = src.suffix_lower().lstrip(".")  # "jpg", "pdf", "", (no extension)
+        ext = src.suffix.lower().lstrip(".")  # "jpg", "pdf", "", (no extension)
 
         bucket = f"{ext}_files" if ext else "no_extension_files"
         dst_dir = DEST_BASE / bucket
@@ -34,6 +36,7 @@ for root, dirs, files in os.walk(INCOMING):
 
         if DRY_RUN:
             print(f"Would have moved: {src} -> {dst}")
+            None
         else:
             dst_dir.mkdir(parents=True, exist_ok=True) # auto-create folder
             shutil.move(str(src), str(dst))
